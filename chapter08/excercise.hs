@@ -102,6 +102,7 @@ folde f g (Add' x y) = g (folde f g x) (folde f g y)
 
 -- ----------------------------------------------
 -- 6.
+
 eval' :: Expr' -> Int
 eval' x = folde id (+) x
 
@@ -115,4 +116,19 @@ main6 = do
   print $ eval' data2
   print $ size data1
   print $ size data2
+
+-- ----------------------------------------------
+-- 7.
+
+{--
+instance Eq a => Eq (Maybe a) where
+  Nothing  == Nothing  = True
+  (Just x) == (Just y) = x == y
+  _        == _        = False
+
+instance Eq a => Eq [a] where
+  []     == []     = True
+  (x:xs) == (y:ys) = x == y && xs == ys
+  xs     == ys     = False
+--}
 

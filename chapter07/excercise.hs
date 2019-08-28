@@ -74,3 +74,78 @@ map'' f = unfold (null) (f . head) tail
 iterate :: (a -> a) -> a -> [a]
 iterate f = unfold (const False) id f
 
+
+-- ----------------------------------------------
+-- 7.
+
+bin2int :: [Bit] -> Int
+bin2int = foldr (\x y -> x + 2 * y) 0
+
+make8 :: [Bit] -> [Bit]
+make8 bits = take 8 (bits ++ repeat 0)
+
+transmit :: String -> String
+transmit = decode . channel . encode
+
+encode :: String -> [Bit]
+encode = concat . map (addParity . make8 . int2bin . ord)
+
+channel :: [Bit] -> [Bit]
+channel = id
+
+decode :: [Bit] -> String
+decode =  map (chr . bin2int . check) . chop9
+  where
+    chop9 = unfold (null) (take 9) (drop 9)
+    check (x:xs)
+      | x == (calcParity xs) = xs
+      | otherwise            = error "parity error!"
+
+addParity :: [Bit] -> [Bit]
+addParity bits = (calcParity bits) : bits
+
+calcParity :: [Bit] -> Bit
+calcParity bits = sum bits `mod` 2
+
+main7 = do
+  print $ transmit "higher-order functions are easy"
+
+-- ----------------------------------------------
+-- 8.
+
+brokenChannel :: [Bit] -> [Bit]
+brokenChannel  bits = tail bits
+
+brokenTransmit :: String -> String
+brokenTransmit = decode . brokenChannel . encode
+
+main8 = do
+  print $ brokenTransmit "higher-order functions are easy"
+
+-- ----------------------------------------------
+-- 9.
+
+altMap :: (a -> b) -> (a -> b) -> [a] -> [b]
+altMap f g []       = []
+altMap f g (x:[])   = f x : []
+altMap f g (x:y:xs) = f x : g y : altMap f g xs
+
+main9 = do
+  print $ altMap (+10) (+100) [0,1,2,3,4]
+
+-- ----------------------------------------------
+-- 10.
+
+luhnDouble :: Int -> Int
+luhnDouble x
+  | n < 10    = n
+  | otherwise = n - 9
+  where n = x*2
+
+luhn :: Int -> Int -> Int -> Int -> Bool
+luhn a b c d = ((luhnDouble a) + b + (luhnDouble c) + d) `mod` 10 == 0
+
+luhn' :: [Int] -> Bool
+luhn' xs = (mod (sum $ f xs) 10) == 0
+  where
+    f = altMap luhnDouble id

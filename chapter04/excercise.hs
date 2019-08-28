@@ -85,13 +85,10 @@ mult = \x -> (\y -> (\z -> (x * y * z)))
 -- 8.
 
 luhnDouble :: Int -> Int
-luhnDouble x | n < 10    = n
-             | otherwise = n - 9
-  where n = x*2
+luhnDouble x
+  | n < 10    = n
+  | otherwise = n - 9
+  where n = x * 2
 
 luhn :: Int -> Int -> Int -> Int -> Bool
-luhn w x y z = ((luhnDouble w) + x + (luhnDouble y) + z) `mod` 10 == 0
-
-
-
-
+luhn a b c d = ((luhnDouble a) + b + (luhnDouble c) + d) `mod` 10 == 0

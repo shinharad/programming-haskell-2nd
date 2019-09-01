@@ -1,3 +1,5 @@
+module Chapter01_excercise where
+
 -- 1.
 double :: Int -> Int
 double n = n + n

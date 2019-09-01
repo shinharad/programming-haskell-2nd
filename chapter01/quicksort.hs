@@ -1,3 +1,5 @@
+module Chapter01_quicksort where
+  
 qsort [] = []
 qsort (x:xs) = qsort smaller ++ [x] ++ qsort larger
   where

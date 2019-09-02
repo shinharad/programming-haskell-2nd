@@ -1,3 +1,5 @@
+module Foldl where
+
 {--
 sum :: Num a => [a] -> a
 sum = sum' 0

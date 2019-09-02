@@ -1,5 +1,6 @@
-module Chapter01_quicksort where
+module Quicksort where
   
+qsort :: Ord a => [a] -> [a]
 qsort [] = []
 qsort (x:xs) = qsort smaller ++ [x] ++ qsort larger
   where

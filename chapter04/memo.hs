@@ -1,3 +1,5 @@
+module Memo where
+
 -- ガード付きの等式
 abs' :: Int -> Int
 abs' n | n >= 0 = n

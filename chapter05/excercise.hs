@@ -1,3 +1,5 @@
+module Excercise where
+
 import Data.Char
 
 -- ----------------------------------------------

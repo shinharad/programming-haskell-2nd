@@ -1,3 +1,5 @@
+module Transmit where
+
 -- 7.6 文字列の２進数変換器
 
 import Data.Char

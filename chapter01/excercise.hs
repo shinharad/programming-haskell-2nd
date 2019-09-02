@@ -1,4 +1,4 @@
-module Chapter01_excercise where
+module Excercise where
 
 -- 1.
 double :: Int -> Int
@@ -10,6 +10,7 @@ product' [] = 1
 product' (x:xs) = x * product' xs
 
 -- 4.
+qsort :: Ord a => [a] -> [a]
 qsort [] = []
 qsort (x:xs) = qsort smaller ++ [x] ++ qsort larger
   where
@@ -20,6 +21,7 @@ qsort' :: [Int] -> [Int]
 qsort' = reverse . qsort 
 
 -- 5.
+qsort'' :: Ord a => [a] -> [a]
 qsort'' [] = []
 qsort'' (x:xs) = qsort smaller ++ [x] ++ qsort larger
   where

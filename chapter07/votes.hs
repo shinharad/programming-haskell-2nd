@@ -1,3 +1,5 @@
+module Votes where
+
 -- 7.7 投票アルゴリズム
 
 import Data.List

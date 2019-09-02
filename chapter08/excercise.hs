@@ -1,3 +1,5 @@
+module Excercise where
+
 -- 1.
 
 data Nat = Zero | Succ Nat deriving Show

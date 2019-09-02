@@ -1,3 +1,5 @@
+module Caesar where
+
 import Data.Char
 
 -- シーザー暗号

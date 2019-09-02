@@ -1,4 +1,7 @@
+module Excercise where
+
 -- 3.
+n :: Int
 n = a `div` length xs
     where
         a = 10

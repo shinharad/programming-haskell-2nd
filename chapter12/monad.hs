@@ -1,4 +1,4 @@
-module Memo where
+module Monad where
 
 -- ----------------------------------------------
 -- 12.1 関手

@@ -39,5 +39,47 @@ instance Monad ST where
   -- (>>=) :: ST a -> (a -> ST b) -> ST b
   st >>= f = S (\s -> let (x,s') = app st s in app (f x) s')
 
+
 -- ----------------------------------------------
 -- 12.3.3 木構造のラベル付け
+
+data Tree a = Leaf a | Node (Tree a) (Tree a)
+              deriving Show
+
+tree :: Tree Char
+tree = Node (Node (Leaf 'a') (Leaf 'b')) (Leaf 'c')
+
+rlabel :: Tree a -> Int -> (Tree Int, Int)
+rlabel (Leaf _)   n = (Leaf n, n+1)
+rlabel (Node l r) n = (Node l' r', n'')
+                      where
+                        (l', n') = rlabel l n
+                        (r', n'') = rlabel r n'
+
+main1 =
+  print $ fst (rlabel tree 0)
+  -- Node (Node (Leaf 0) (Leaf 1)) (Leaf 2)
+
+{--
+rlabelの定義が複雑なので、
+Tree a -> Int -> (Tree Int, Int) は、状態変換器を用いると、
+Tree a -> ST (Tree Int) と書き換えられる
+--}
+
+-- 未使用の整数を得るために、現在の状態を返し、次の整数が次の状態となる状態変換器を定義する
+fresh :: ST Int
+fresh = S (\n -> (n, n + 1))
+
+-- STはアプリカティブなので、ラベル付けの関数は、以下のようにアプリカティブスタイルで実現できる
+-- g <$> x は、pure g <*> x のように振る舞う
+alabel :: Tree a -> ST (Tree Int)
+alabel (Leaf _)   = Leaf <$> fresh
+alabel (Node l r) = Node <$> alabel l <*> alabel r
+
+-- STはモナドでもあるので、do表記を使った同等な定義も可能
+mlabel :: Tree a -> ST (Tree Int)
+mlabel (Leaf _)   = do n <- fresh
+                       return (Leaf n) -- 冗長なのでアプリカティブスタイルの方が良さそう
+mlabel (Node l r) = do l' <- mlabel l
+                       r' <- mlabel r
+                       return (Node l' r')
